@@ -16,8 +16,8 @@ def scrape_investing(url, assets, asset_type)
 
   assets.each do |asset|
     asset = Asset.new(asset_name: asset["name"])
-    puts doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-last").text.to_f
-    puts doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-pcp").text.to_f
+    puts doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-last").text
+    puts doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-pcp").text
     asset.save
   end
 end
@@ -77,7 +77,7 @@ ref_crypto = [{ "name" => 'BTC/USD', "investing_id" => 1073245 },
           { "name" => 'LTC/USD', "investing_id" => 1031704 }
         ]
 
-scrape_investing("https://fr.investing.com/crypto/currency-pairs", ref_commodities, "Equity")
+scrape_investing("https://fr.investing.com/crypto/currency-pairs", ref_crypto, "Equity")
 
 
 
