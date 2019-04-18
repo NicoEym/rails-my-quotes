@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_12_211612) do
+ActiveRecord::Schema.define(version: 2019_04_18_214715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,8 +22,8 @@ ActiveRecord::Schema.define(version: 2019_04_12_211612) do
   end
 
   create_table "assets", force: :cascade do |t|
-    t.float "last_price"
-    t.float "daily_variation"
+    t.string "last_price"
+    t.string "daily_variation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "asset_name"
