@@ -10,53 +10,60 @@ require "nokogiri"
 require 'awesome_print'
 
 def scrape_investing_equity(url, assets, asset_type)
+  asset_type = AssetType.create(name: asset_type)
   doc = Nokogiri::HTML(open(url).read)
-
   puts "Stocks indices"
 
   assets.each do |asset|
     asset = Asset.new(asset_name: asset["name"])
-    puts doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-last").text
-    puts doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-pcp").text
+    asset.last_price = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-last").text
+    asset.daily_variation = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-pcp").text
+    asset.asset_type_id = asset_type.id
     asset.save
   end
 end
 
 def scrape_investing_FX(url, assets, asset_type)
+  asset_type = AssetType.create(name: asset_type)
   doc = Nokogiri::HTML(open(url).read)
 
-  puts "Stocks indices"
+  puts "FX"
 
   assets.each do |asset|
     asset = Asset.new(asset_name: asset["name"])
-    puts doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-bid").text
-    puts doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-pcp").text
+    asset.last_price = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-bid").text
+    asset.daily_variation = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-pcp").text
+    asset.asset_type_id = asset_type.id
     asset.save
   end
 end
 
 def scrape_investing_commo(url, assets, asset_type)
+  asset_type = AssetType.create(name: asset_type)
   doc = Nokogiri::HTML(open(url).read)
 
-  puts "Stocks indices"
+  puts "Commo"
 
   assets.each do |asset|
     asset = Asset.new(asset_name: asset["name"])
-    puts doc.search("#sb_last_#{asset["investing_id"]}").text
-    puts doc.search("#sb_changepc_#{asset["investing_id"]}").text
+    asset.last_price = doc.search("#sb_last_#{asset["investing_id"]}").text
+    asset.daily_variation = doc.search("#sb_changepc_#{asset["investing_id"]}").text
+    asset.asset_type_id = asset_type.id
     asset.save
   end
 end
 
 def scrape_investing_crypto(url, assets, asset_type)
+  asset_type = AssetType.create(name: asset_type)
   doc = Nokogiri::HTML(open(url).read)
 
   puts "Stocks indices"
 
   assets.each do |asset|
     asset = Asset.new(asset_name: asset["name"])
-    puts doc.search(".pid-#{asset["investing_id"]}-last").text
-    puts doc.search(".pid-#{asset["investing_id"]}-pcp").text
+    asset.last_price = doc.search(".pid-#{asset["investing_id"]}-last").text
+    asset.daily_variation = doc.search(".pid-#{asset["investing_id"]}-pcp").text
+    asset.asset_type_id = asset_type.id
     asset.save
   end
 end
