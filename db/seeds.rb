@@ -7,66 +7,36 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require "open-uri"
 require "nokogiri"
-require 'awesome_print'
 
-def scrape_investing_equity(url, assets, asset_type)
-  asset_type = AssetType.create(name: asset_type)
+def scrape_investing(url, assets, asset_type)
+  this_asset_type = AssetType.create(name: asset_type)
+  puts "Filling #{this_asset_type.name}"
   doc = Nokogiri::HTML(open(url).read)
-  puts "Stocks indices"
 
   assets.each do |asset|
-    asset = Asset.new(asset_name: asset["name"])
-    asset.last_price = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-last").text
-    asset.daily_variation = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-pcp").text
-    asset.asset_type_id = asset_type.id
-    asset.save
+    new_asset = Asset.new(asset_name: asset["name"])
+    case this_asset_type.name
+      when "Equity"
+        new_asset.last_price = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-last").text
+        new_asset.daily_variation = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-pcp").text
+      when "Sovereign 10Y"
+        new_asset.last_price = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-last").text
+        new_asset.daily_variation = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-pcp").text
+      when "Forex"
+        new_asset.last_price = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-bid").text
+        new_asset.daily_variation = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-pcp").text
+      when "Commodities"
+        new_asset.last_price = doc.search("#sb_last_#{asset["investing_id"]}").text
+        new_asset.daily_variation = doc.search("#sb_changepc_#{asset["investing_id"]}").text
+      when "Crypto Currencies"
+        new_asset.last_price = doc.search(".pid-#{asset["investing_id"]}-last").text
+        new_asset.daily_variation = doc.search(".pid-#{asset["investing_id"]}-pcp").text
+    end
+    new_asset.asset_type_id = this_asset_type.id
+    new_asset.save
   end
 end
 
-def scrape_investing_FX(url, assets, asset_type)
-  asset_type = AssetType.create(name: asset_type)
-  doc = Nokogiri::HTML(open(url).read)
-
-  puts "FX"
-
-  assets.each do |asset|
-    asset = Asset.new(asset_name: asset["name"])
-    asset.last_price = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-bid").text
-    asset.daily_variation = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-pcp").text
-    asset.asset_type_id = asset_type.id
-    asset.save
-  end
-end
-
-def scrape_investing_commo(url, assets, asset_type)
-  asset_type = AssetType.create(name: asset_type)
-  doc = Nokogiri::HTML(open(url).read)
-
-  puts "Commo"
-
-  assets.each do |asset|
-    asset = Asset.new(asset_name: asset["name"])
-    asset.last_price = doc.search("#sb_last_#{asset["investing_id"]}").text
-    asset.daily_variation = doc.search("#sb_changepc_#{asset["investing_id"]}").text
-    asset.asset_type_id = asset_type.id
-    asset.save
-  end
-end
-
-def scrape_investing_crypto(url, assets, asset_type)
-  asset_type = AssetType.create(name: asset_type)
-  doc = Nokogiri::HTML(open(url).read)
-
-  puts "Stocks indices"
-
-  assets.each do |asset|
-    asset = Asset.new(asset_name: asset["name"])
-    asset.last_price = doc.search(".pid-#{asset["investing_id"]}-last").text
-    asset.daily_variation = doc.search(".pid-#{asset["investing_id"]}-pcp").text
-    asset.asset_type_id = asset_type.id
-    asset.save
-  end
-end
 
 ref_equity = [{ "name" => 'CAC 40', "investing_id" => 167 },
           { "name" => 'Eurostoxx 50', "investing_id" => 175 },
@@ -80,19 +50,12 @@ ref_equity = [{ "name" => 'CAC 40', "investing_id" => 167 },
           { "name" => 'Hang Seng', "investing_id" => 179 }
         ]
 
-scrape_investing_equity("https://fr.investing.com/indices/major-indices", ref_equity, "Equity")
-
-
-
 ref_forex = [{ "name" => 'EUR/USD', "investing_id" => 1 },
           { "name" => 'USD/BRL', "investing_id" => 2103 },
           { "name" => 'USD/JPY', "investing_id" => 3 },
           { "name" => 'GBP/USD', "investing_id" => 2 },
           { "name" => 'USD/CHF', "investing_id" => 4 }
         ]
-
-scrape_investing_FX("https://fr.investing.com/currencies/single-currency-crosses", ref_forex, "Equity")
-
 
 ref_sovereign_10Y = [{ "name" => 'Germany', "investing_id" => 23693 },
           { "name" => 'USA', "investing_id" => 23705 },
@@ -103,18 +66,11 @@ ref_sovereign_10Y = [{ "name" => 'Germany', "investing_id" => 23693 },
           { "name" => 'Spain', "investing_id" => 23806 }
         ]
 
-scrape_investing_equity("https://fr.investing.com/rates-bonds/world-government-bonds", ref_sovereign_10Y, "Equity")
-
-
-ref_commodities = [{ "name" => 'Gold', "investing_id" => 23693 },
-          { "name" => 'Silver', "investing_id" => 23705 },
-          { "name" => 'WTI', "investing_id" => 24029 },
-          { "name" => 'Brent', "investing_id" => 23778 }
+ref_commodities = [{ "name" => 'Gold', "investing_id" => 8830 },
+          { "name" => 'Silver', "investing_id" => 8836 },
+          { "name" => 'WTI', "investing_id" => 8849 },
+          { "name" => 'Brent', "investing_id" => 8833 }
         ]
-
-scrape_investing_commo("https://fr.investing.com/commodities/real-time-futures", ref_commodities, "Equity")
-
-
 
 ref_crypto = [{ "name" => 'BTC/USD', "investing_id" => 1073245 },
           { "name" => 'ETH/USD', "investing_id" => 1031703 },
@@ -123,7 +79,11 @@ ref_crypto = [{ "name" => 'BTC/USD', "investing_id" => 1073245 },
           { "name" => 'LTC/USD', "investing_id" => 1031704 }
         ]
 
-scrape_investing_crypto("https://fr.investing.com/crypto/currency-pairs", ref_crypto, "Equity")
 
+scrape_investing("https://fr.investing.com/indices/major-indices", ref_equity, "Equity")
+scrape_investing("https://fr.investing.com/rates-bonds/world-government-bonds", ref_sovereign_10Y, "Sovereign 10Y")
+scrape_investing("https://fr.investing.com/currencies/single-currency-crosses", ref_forex, "Forex")
+scrape_investing("https://fr.investing.com/commodities/real-time-futures", ref_commodities, "Commodities")
+scrape_investing("https://fr.investing.com/crypto/currency-pairs", ref_crypto, "Crypto Currencies")
 
 
