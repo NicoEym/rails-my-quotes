@@ -80,6 +80,10 @@ ref_crypto = [{ "name" => 'BTC/USD', "investing_id" => 1073245 },
         ]
 
 
+
+Asset.delete_all
+AssetType.delete_all
+
 scrape_investing("https://fr.investing.com/indices/major-indices", ref_equity, "Equity")
 scrape_investing("https://fr.investing.com/rates-bonds/world-government-bonds", ref_sovereign_10Y, "Sovereign 10Y")
 scrape_investing("https://fr.investing.com/currencies/single-currency-crosses", ref_forex, "Forex")
