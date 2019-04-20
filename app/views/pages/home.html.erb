@@ -1,5 +1,41 @@
 <div class="banner" style="background-image: linear-gradient(-225deg, rgba(0,101,168,0.6) 0%, rgba(0,36,61,0.6) 50%), url('https://images.pexels.com/photos/159888/pexels-photo-159888.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');">
-  <div class="banner-content">
+<div class="row">
+  <% @asset_types.each do |asset_type|  %>
+      <div class="asset_type col-xs-12 col-md-4">
 
+        <table class="data-table">
+
+          <thead>
+            <tr>
+              <th colspan="3"><h2><%= asset_type.name %></h2></th>
+            </tr>
+            <tr>
+              <th>Asset</th>
+              <th>Last Price</th>
+              <th>Daily Variation</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <%asset_type.assets.sort.each do |asset|  %>
+
+              <tr>
+                <td><%= asset.asset_name  %></td>
+                <td><%= asset.last_price  %></td>
+                <% if asset.daily_variation[0] == "+" %>
+                    <td class="green"><%= asset.daily_variation  %></td>
+                <% elsif asset.daily_variation[0] == "-"%>
+                    <td class="red"><%= asset.daily_variation  %></td>
+                    <% else %>
+                    <td><%= asset.daily_variation  %></td>
+                <% end %>
+
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+  <% end  %>
   </div>
 </div>
