@@ -3,3 +3,32 @@
 @import "avatar";
 @import "navbar";
 @import "banner";
+
+
+.asset_type{
+  margin-bottom: 2em;
+
+}
+
+
+.data-table {
+  width: 100%!important;
+  background-color: rgba(200, 200, 200, 0.8);
+  border-radius: 1%;
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
+td, th {
+    border: 1px solid rgba(230, 230, 230, 0.7);
+    border-radius: 1%;
+}
