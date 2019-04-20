@@ -20,7 +20,7 @@ def scrape_investing(url, assets, asset_type)
         new_asset.last_price = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-last").text
         new_asset.daily_variation = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-pcp").text
       when "Sovereign 10Y"
-        new_asset.last_price = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-last").text
+        new_asset.last_price = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-last").text + "%"
         new_asset.daily_variation = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-pcp").text
       when "Forex"
         new_asset.last_price = doc.search("#pair_#{asset["investing_id"]} .pid-#{asset["investing_id"]}-bid").text
@@ -43,31 +43,40 @@ ref_equity = [{ "name" => 'CAC 40', "investing_id" => 167 },
           { "name" => 'S&P500', "investing_id" => 166 },
           { "name" => 'Nasdaq', "investing_id" => 14958 },
           { "name" => 'VIX', "investing_id" => 44336 },
-          { "name" => 'Ibovespa', "investing_id" => 17920 },
-          { "name" => 'DAX', "investing_id" => 172 },
           { "name" => 'FTSE 100', "investing_id" => 27 },
+          { "name" => 'DAX', "investing_id" => 172 },
+          { "name" => 'Ibovespa', "investing_id" => 17920 },
           { "name" => 'Nikkei 225', "investing_id" => 178 },
           { "name" => 'Hang Seng', "investing_id" => 179 }
         ]
 
 ref_forex = [{ "name" => 'EUR/USD', "investing_id" => 1 },
-          { "name" => 'USD/BRL', "investing_id" => 2103 },
           { "name" => 'USD/JPY', "investing_id" => 3 },
-          { "name" => 'GBP/USD', "investing_id" => 2 },
-          { "name" => 'USD/CHF', "investing_id" => 4 }
+          { "name" => 'USD/GBP', "investing_id" => 2126 },
+          { "name" => 'USD/CAD', "investing_id" => 7 },
+          { "name" => 'USD/AUD', "investing_id" => 2091 },
+          { "name" => 'USD/CHF', "investing_id" => 4 },
+          { "name" => 'USD/TRY', "investing_id" => 18 },
+          { "name" => 'USD/MXN', "investing_id" => 39 },
+          { "name" => 'USD/BRL', "investing_id" => 2103 },
+          { "name" => 'USD/CNY', "investing_id" => 2111 },
         ]
 
 ref_sovereign_10Y = [{ "name" => 'Germany', "investing_id" => 23693 },
           { "name" => 'USA', "investing_id" => 23705 },
-          { "name" => 'Brazil', "investing_id" => 24029 },
           { "name" => 'France', "investing_id" => 23778 },
-          { "name" => 'Italy', "investing_id" => 23738 },
           { "name" => 'UK', "investing_id" => 23673 },
-          { "name" => 'Spain', "investing_id" => 23806 }
+          { "name" => 'Italy', "investing_id" => 23738 },
+          { "name" => 'Spain', "investing_id" => 23806 },
+          { "name" => 'Portugal', "investing_id" => 23792 },
+          { "name" => 'Greece', "investing_id" => 23983 },
+          { "name" => 'Brazil', "investing_id" => 24029 },
+          { "name" => 'Turkey', "investing_id" => 24037 },
         ]
 
 ref_commodities = [{ "name" => 'Gold', "investing_id" => 8830 },
           { "name" => 'Silver', "investing_id" => 8836 },
+          { "name" => 'Copper', "investing_id" => 8831 },
           { "name" => 'WTI', "investing_id" => 8849 },
           { "name" => 'Brent', "investing_id" => 8833 }
         ]
