@@ -18,9 +18,8 @@
 
           <tbody>
             <%asset_type.assets.sort.each do |asset|  %>
-
               <tr>
-                <td><%= asset.asset_name  %></td>
+                <td> <%= image_tag(asset.flag) + " "+ asset.asset_name %>  </td>
                 <td><%= asset.last_price  %></td>
                 <% if asset.daily_variation[0] == "+" %>
                     <td class="green"><%= asset.daily_variation  %></td>
@@ -29,13 +28,11 @@
                     <% else %>
                     <td><%= asset.daily_variation  %></td>
                 <% end %>
-
               </tr>
             <% end %>
           </tbody>
         </table>
       </div>
-
   <% end  %>
   </div>
 </div>
