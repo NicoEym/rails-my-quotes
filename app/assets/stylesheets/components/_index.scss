@@ -6,7 +6,7 @@
 
 
 .asset_type{
-  margin-bottom: 2em;
+  margin-top: 2em;
 
 }
 
@@ -31,4 +31,9 @@
 td, th {
     border: 1px solid rgba(230, 230, 230, 0.7);
     border-radius: 1%;
+}
+
+.no-margin {
+    margin-right: 0px;
+    margin-left: 0px;
 }
