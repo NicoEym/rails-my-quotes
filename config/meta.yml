@@ -1,0 +1,5 @@
+meta_product_name: "My MarketData"
+meta_title: "My MarketData - Toutes les valeurs qui m'intéressent sur une seule et même page."
+meta_description: "Marre de visiter plusieurs pages différentes pour suivre tous les prix ou taux qui t'intéresse? Avec MyMarketData, ils sont tous sur une seule page"
+# meta_image: "cover.png" # should exist in `app/assets/images/`
+# twitter_account: "@product_twitter_account"   # required for Twitter Cards
